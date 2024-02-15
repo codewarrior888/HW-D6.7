@@ -1,0 +1,9 @@
+<!-- article_not_found.html -->
+
+{% extends 'flatpages/default.html' %}
+
+{% block content %}
+  <h1>Ой! Даже не знаем, как Вам об этом сказать!</h1>
+  <p>Такой статьи не существует!</p>
+  <a href="{% url 'articles_list' %}">Перейти обратно к списку</a>
+{% endblock content %}

@@ -1,0 +1,70 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}!
+{% load custom_tags %}
+
+{% block title %}
+Главные новости и статьи недели
+{% endblock title %}
+
+{% block content %}
+<h1>Все новости</h1>
+<h3>{% current_date '%d.%b.%Y' %}</h3>
+   <hr>
+
+    {% if perms.news.add_post %}
+    <a href="{% url 'news_create' %}">Создать новость</a>
+    {% endif %}
+
+   {% if posts %}
+       <table>
+           <tr>
+               <td style="...">Номер</td>
+               <td style="width:300px; text-align:left;">Заголовок</td>
+               <td style="width:200px; text-align:left;">Дата публикации</td>
+               <td style="width:450px; text-align:left;">Текст</td>
+           </tr>
+
+           {% for post in posts %}
+           <tr>
+               <td>{{ post.pk }}</td>
+               <td><a href=" {% url 'post_detail' post_genre=post.post_genre pk=post.pk %}">{{ post.post_title|censor }}</a></td>
+               <td><em>{{ post.post_time|format_time }}</em></td>
+               <td>{{ post.preview|censor }}</td>  <!-- метод preview вместо truncatewords: 20 -->
+               <td>
+                    {# А здесь доступ для каждой ссылки теперь будем проверять отдельно #}
+                    {% if perms.news.change_post %}
+                    <a href="{% url 'news_edit' pk=post.pk %}">Изменить</a>
+                    {% endif %}
+                    {% if perms.news.delete_post %}
+                    <a href="{% url 'news_delete' post.pk %}">Удалить</a>
+                    {% endif %}
+                </td>
+
+           </tr>
+           {% endfor %}
+
+       </table>
+   {% else %}
+       <h2>Новостей нет!</h2>
+   {% endif %}
+<p>&nbsp</p>
+<div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; Первая</a>
+            <a href="?page={{ page_obj.previous_page_number }}">Назад</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">Вперед</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">Последняя &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+
+{% endblock content %}
