@@ -123,24 +123,16 @@ APSCHEDULER_RUN_NOW_TIMEOUT = 25  # кол-во секунд для выполн
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  #для тестирования через консоль
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = "skakov.k@yandex.ru"
-EMAIL_HOST_PASSWORD = "fqfioupnuopfmpns"
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True
 EMAIL_SUBJECT_PREFIX = "News Portal"  # заменить стандартную надпись Django в фреймворках
-DEFAULT_FROM_EMAIL = "skakov.k@yandex.ru"  # значение по умолчанию для поля from в письме
-SERVER_EMAIL = "skakov.k@yandex.ru"
+SERVER_EMAIL = os.getenv('SERVER_EMAIL')
 
-# EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
-# EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-# DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')
-
-ADMINS = (
-    ('Kirill', 'skakov.k@yandex.ru'),
-)
-MANAGERS = (
-    ('Kirill', 'kirill_skakov@yahoo.com'),
-)
+ADMINS = os.getenv('ADMINS'),
+MANAGERS = os.getenv('MANAGERS'),
 
 AUTH_PASSWORD_VALIDATORS = [
     {
